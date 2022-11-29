@@ -161,34 +161,3 @@ export const loadPageWrapper = (<
     (load: LoadExtendedActual) => (event: LoadEvent<Params, InputData, ModifiedOutput<ParentData>, RouteId>) =>
     sharedInvoke(load, event).then((result) => result.__loadPromise)
 ) as LoadPageWrapper;
-
-
-// type ModifiedEvent<LoadExtendedActual extends LoadExtended<
-//     Partial<Record<string, string>>,
-//     Record<string, unknown> | null,
-//     Record<string, unknown>,
-//     Record<string, unknown> | void,
-//     string | null>> = Exclude<Parameters<LoadExtendedActual>[0], 'parent'> &
-//         { parent: () => Promise<ModifiedOutput<Awaited<ReturnType<Parameters<LoadExtendedActual>[0]['parent']>>>> };
-
-// export const loadLayoutWrapper = (<
-//     LoadExtendedActual extends LoadExtended<
-//         Partial<Record<string, string>>,
-//         Record<string, unknown> | null,
-//         Record<string, unknown>,
-//         Record<string, unknown> | void,
-//         string | null>>
-//     (load: LoadExtendedActual) => (event: ModifiedEvent<LoadExtendedActual> ) =>
-//         sharedInvoke(load, event)
-// );
-
-// export const loadPageWrapper = (<
-//     LoadExtendedActual extends LoadExtended<
-//         Partial<Record<string, string>>,
-//         Record<string, unknown> | null,
-//         Record<string, unknown>,
-//         Record<string, unknown> | void,
-//         string | null>>
-//     (load: LoadExtendedActual) => (event: ModifiedEvent<LoadExtendedActual> ) =>
-//     sharedInvoke(load, event).then((result) => result.__loadPromise)
-// );
