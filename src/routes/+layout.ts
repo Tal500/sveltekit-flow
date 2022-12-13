@@ -1,8 +1,5 @@
-import { loadStartWrapper, type LoadContext } from '$lib';
+import { loadStartWrapper } from '$lib';
 
-import type { LayoutLoad, LayoutLoadEvent } from './$types';
- 
-//export const load = loadStartBlank<LayoutLoadEvent>();
-//export const load = loadStartWrapper((() => undefined) as BaseLoadExtended<LayoutLoadEvent>);
-//export const load = loadStartWrapper<(event: LayoutLoadEvent) => void>(() => undefined);
+import type { LayoutLoadEvent } from './$types';
+
 export const load = loadStartWrapper((event: LayoutLoadEvent) => {event;});
