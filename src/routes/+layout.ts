@@ -1,5 +1,5 @@
-import { loadStartWrapper } from '$lib';
+import { loadStartWrapper, type SimplifyLoadEvent } from '$lib';
 
 import type { LayoutLoadEvent } from './$types';
 
-export const load = loadStartWrapper((event: LayoutLoadEvent) => {event;});
+export const load = loadStartWrapper((event: SimplifyLoadEvent<LayoutLoadEvent>) => {event;});

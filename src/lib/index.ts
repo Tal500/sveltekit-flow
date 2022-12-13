@@ -33,7 +33,8 @@ interface ModifiedOutput<OutputData extends Record<string, unknown>> extends Rec
     __load: { promise: Promise<OutputData> }
 };
 
-export type OriginalData<ModifiedData extends { __load: { promise: Promise<unknown> } }> = Awaited<ModifiedData['__load']['promise']>;
+type _OriginalData<ModifiedData extends { __load: { promise: Promise<unknown> } }> = Awaited<ModifiedData['__load']['promise']>;
+export type OriginalData<ModifiedData> = ModifiedData extends { __load: { promise: Promise<unknown> } } ? _OriginalData<ModifiedData> : Awaited<ModifiedData>;
 
 export interface LoadExtended<
 	Params extends Partial<Record<string, string>> = Partial<Record<string, string>>,
@@ -58,9 +59,8 @@ type LoadLayoutWrapper = <
     InputData extends Record<string, unknown> | null,
     ParentData extends Record<string, unknown>,
     OutputData extends Record<string, unknown> | void,
-    RouteId extends string | null,
-    LoadExtendedActual extends LoadExtended<Params, InputData, ParentData, OutputData, RouteId>>
-    (load: LoadExtendedActual) => Load<Params, InputData, ParentData, ModifiedOutput<ParentData & Normalize<OutputData>>, RouteId>;
+    RouteId extends string | null
+    >(load: LoadExtended<Params, InputData, ParentData, OutputData, RouteId>) => Load<Params, InputData, ParentData, ModifiedOutput<ParentData & Normalize<OutputData>>, RouteId>;
 
 type LoadPageWrapper = <
     Params extends Partial<Record<string, string>>,
@@ -77,6 +77,9 @@ export type ExtractLayoutData<
 
 export type BaseLoadExtended<Event extends LoadEvent<Partial<Record<string, string>>, Record<string, unknown> | null, Record<string, unknown>, string | null>> =
     LoadExtended<Event['params'], Event['data'], Awaited<ReturnType<Event['parent']>>, void, Event['route']['id']>;
+
+export type SimplifyLoadEvent<Event extends LoadEvent<Partial<Record<string, string>>, Record<string, unknown> | null, Record<string, unknown>, string | null>> =
+    LoadEvent<Event['params'], Event['data'], OriginalData<Awaited<ReturnType<Event['parent']>>>, Event['route']['id']>
 
 const promisifyIfNot = <T>(maybePromise: MaybePromise<T>) =>
     (maybePromise instanceof Promise) ? maybePromise : Promise.resolve(maybePromise);
